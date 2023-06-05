@@ -1,10 +1,10 @@
 import React from 'react'
-
+import unimar from './assets/Unimar.png'
 const Footer = () => {
   return (
     <div className='grid grid-cols-3 2xl:grid 2xl:grid-cols-3 h-full bg-neutral-100'>
         <div className='h-36 flex justify-center items-center px-3 w-full'>
-            <img src='src/components/assets/Unimar.png' className='sm:h-36 sm:w-36 2xl:h-48 2xl:w-48'/>
+            <img src={unimar} className='sm:h-36 sm:w-36 2xl:h-48 2xl:w-48'/>
         </div>
         <div className='flex justify-start items-center text-lg'>
             <div className='grid'>
