@@ -154,6 +154,7 @@ const WithLimit=()=>{
     const timeOnQueue = averageTimeOnQueueWithLimit({usageOfTheSystem, limit, arrivalTime, responseTime });
     const chanceTheyAre = chanceTheyAreOnSystemDetailsWithLimit({ usageOfTheSystem, limit });
     const vacio=chanceTheSystemIsEmptyWithLimit({usageOfTheSystem,limit})
+    const landaEfectivo=chanceToEnterTheSystem({arrivalTime, usageOfTheSystem, limit })
     setDatos({
         ...datos,
         ρ: usageOfTheSystem.toFixed(4),
@@ -162,7 +163,8 @@ const WithLimit=()=>{
         Ws: timeOnSystem.toFixed(4),
         Wq: timeOnQueue.toFixed(4),
         Acumulado:chanceTheyAre,
-        Vacio:vacio.toFixed(4)
+        Vacio:vacio.toFixed(4),
+        λef:landaEfectivo.toFixed(4)
     })
 }  
 
@@ -285,6 +287,11 @@ const WithLimit=()=>{
                         <p className='border-r border-black text-center bg-slate-200 text-lg font-bold px-2'>Po:</p> 
                         <p className='px-2'>{datos.Vacio}</p>
                     </div>
+                    {showNumberInput ? 
+                    <div className='grid grid-cols-4 border border-black mt-4 w-48 rounded'>
+                        <p className='border-r border-black text-center bg-slate-200 text-lg font-bold px-2'>λef:</p> 
+                        <p className='px-2'>{datos.λef}</p>
+                    </div> : null}
                 </div>
         </div>
             
