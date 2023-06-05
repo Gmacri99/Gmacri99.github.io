@@ -301,7 +301,7 @@ const WithLimit=()=>{
                 La teoría de colas permite estudiar de manera científica el tiempo que los clientes deben esperar cuando solicitan un servicio.</p>
         </div>
         <div className='flex w-full justify-center'>
-            <img src='/src/assets/imagen.png'/> 
+            <img src='src/assets/imagen.png'/> 
         </div>   
     </div>
     </div>
