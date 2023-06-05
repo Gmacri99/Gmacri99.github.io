@@ -66,38 +66,43 @@ const chanceTheSystemIsEmpty = ( {usageOfTheSystem} ) => {
                                         //FUNCIONES PARA SERVIDOR CON LIMITE//
 
 // Wq con limite
-const averageTimeOnQueueWithLimit = ( usageOfTheSystem, limit, arrivalTime, responseTime ) => {
-    return (averageNumberOfClientsOnTheQueue( usageOfTheSystem, limit, arrivalTime, responseTime ) / chanceToEnterTheSystem( arrivalTime, usageOfTheSystem, limit ))
+const averageTimeOnQueueWithLimit = ( {usageOfTheSystem, limit, arrivalTime, responseTime }) => {
+
+    return (averageNumberOfClientsOnTheQueueWithLimit ( {usageOfTheSystem, limit, arrivalTime, responseTime} ) / chanceToEnterTheSystem( {arrivalTime, usageOfTheSystem, limit} ))
   }
 
 // Ws con limite
-const averageTimeOnSystemWithLimit = ( usageOfTheSystem, limit, arrivalTime, responseTime ) => {
-    return (averageTimeOnQueue( usageOfTheSystem, limit, arrivalTime, responseTime ) + (1 / responseTime));
+const averageTimeOnSystemWithLimit = ( {usageOfTheSystem, limit, arrivalTime, responseTime} ) => {
+    return (averageTimeOnQueueWithLimit ( {usageOfTheSystem, limit, arrivalTime, responseTime }) + (1 / responseTime));
   }
 
 // Lq con limite
-const averageNumberOfClientsOnTheQueueWithLimit = ( usageOfTheSystem, limit, arrivalTime, responseTime ) => {
-    return (averageNumberOfClientsOnTheSystem( usageOfTheSystem, limit ) - (chanceToEnterTheSystem( arrivalTime, usageOfTheSystem, limit ) / responseTime));
-  }
+const averageNumberOfClientsOnTheQueueWithLimit = ( {usageOfTheSystem, limit, arrivalTime, responseTime} ) => {
+  return (averageNumberOfClientsOnTheSystemWithLimit( {usageOfTheSystem, limit }) - (chanceToEnterTheSystem( {arrivalTime, usageOfTheSystem, limit:limit+1 }) / responseTime));
+}
+
 
 // λef
-const chanceToEnterTheSystem = ( arrivalTime, usageOfTheSystem, limit ) => {
-    return (arrivalTime * (1 - chanceTheyAreOnSystem({ clientsAmount: limit, usageOfTheSystem, limit })));
-  }
-  
-// Ls con limite
-const averageNumberOfClientsOnTheSystemWithLimit = ( usageOfTheSystem, limit ) => {
+const chanceToEnterTheSystem = ({ arrivalTime, usageOfTheSystem, limit }) => {
 
-    if (usageOfTheSystem !== 1) {
-      return ((usageOfTheSystem * (1 - ((limit + 1) * (usageOfTheSystem ** limit)) + (limit * (usageOfTheSystem ** (limit + 1))))) / ((1 - usageOfTheSystem) * (1 - (usageOfTheSystem ** (limit + 1)))))
-    }
-  
-    return (limit / 2);
+  return (arrivalTime * (1 - chanceTheyAreOnSystemWithLimit({ clientsAmount: limit, usageOfTheSystem, limit })));
+}
+
+
+// Ls con limite
+const averageNumberOfClientsOnTheSystemWithLimit = ( {usageOfTheSystem, limit }) => {
+  limit+=1
+  if (usageOfTheSystem !== 1) {
+    return ((usageOfTheSystem * (1 - ((limit + 1) * (usageOfTheSystem ** limit)) + (limit * (usageOfTheSystem ** (limit + 1))))) / ((1 - usageOfTheSystem) * (1 - (usageOfTheSystem ** (limit + 1)))))
   }
+
+  return (limit / 2);
+}
 
 
 // Po con limite
 const chanceTheSystemIsEmptyWithLimit  = ({ usageOfTheSystem, limit }) => {
+
     if (usageOfTheSystem !== 1) {
       return ((1 - usageOfTheSystem) / (1 - (usageOfTheSystem ** (limit + 1))));
     }
@@ -107,6 +112,7 @@ const chanceTheSystemIsEmptyWithLimit  = ({ usageOfTheSystem, limit }) => {
   
   // Pn con limite
   const chanceTheyAreOnSystemWithLimit  = ({ clientsAmount, usageOfTheSystem, limit }) => {
+
     if (clientsAmount <= limit) {
       const chanceIsEmpty = chanceTheSystemIsEmptyWithLimit ({ usageOfTheSystem, limit });
   
@@ -124,7 +130,7 @@ const chanceTheSystemIsEmptyWithLimit  = ({ usageOfTheSystem, limit }) => {
     if (usageOfTheSystem !== 1) {
       let counter = 0;
       let accumulated = 0;
-      while (counter <= limit) {
+      while (counter <= limit+1) {
         const chance = chanceTheyAreOnSystemWithLimit({ clientsAmount: counter, usageOfTheSystem, limit });
         accumulated += chance;
         result.push({ n: counter, Pn: chance.toFixed(4), PnAccumulated: accumulated.toFixed(4) });
@@ -139,13 +145,13 @@ const chanceTheSystemIsEmptyWithLimit  = ({ usageOfTheSystem, limit }) => {
   }
   
 
-
+  
 const WithLimit=()=>{
     const usageOfTheSystem = averageUsageOfTheSystem( arrivalTime, responseTime );
-    const timeOnSystem = averageTimeOnSystemWithLimit( usageOfTheSystem, limit, arrivalTime, responseTime );
-    const numberOfClientsOnTheQueue = averageNumberOfClientsOnTheQueueWithLimit(usageOfTheSystem, limit, arrivalTime, responseTime );
-    const timeOnQueue = averageTimeOnQueueWithLimit(usageOfTheSystem, limit, arrivalTime, responseTime );
-    const numberOfClientsOnTheSystem = averageNumberOfClientsOnTheSystemWithLimit( usageOfTheSystem, limit );
+    const numberOfClientsOnTheSystem = averageNumberOfClientsOnTheSystemWithLimit({usageOfTheSystem, limit });
+    const timeOnSystem = averageTimeOnSystemWithLimit( {usageOfTheSystem, limit, arrivalTime, responseTime} );
+    const numberOfClientsOnTheQueue = averageNumberOfClientsOnTheQueueWithLimit({usageOfTheSystem, limit, arrivalTime, responseTime });
+    const timeOnQueue = averageTimeOnQueueWithLimit({usageOfTheSystem, limit, arrivalTime, responseTime });
     const chanceTheyAre = chanceTheyAreOnSystemDetailsWithLimit({ usageOfTheSystem, limit });
     const vacio=chanceTheSystemIsEmptyWithLimit({usageOfTheSystem,limit})
     setDatos({
