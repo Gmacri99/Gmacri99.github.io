@@ -228,7 +228,7 @@ const WithLimit=()=>{
             <form>
                 <div className='grid justify-center py-1 '>
                 <label className='px-4 text-center py-2'>Tiempo de Llegada ( λ ):</label>
-                <input type="number" value={arrivalTime} onChange={handleNum1Change} min={1} placeholder='λ...' className='rounded sm:w-72 sm:pl-2 text-lg outline-none' required/>
+                <input type="number" value={arrivalTime} onChange={handleNum1Change} step="0" min={1} placeholder='λ...' className='rounded sm:w-72 sm:pl-2 text-lg outline-none' required/>
                 </div>
                 <div className='grid justify-center py-1'>
                 <label className='px-4 text-center py-2'>Tiempo de Atención ( μ ):</label>
@@ -283,13 +283,13 @@ const WithLimit=()=>{
         </div>
             
         <div className='col-span-1 md:col-span-2 lg:col-span-2 pt-3 h-96 overflow-y-scroll sm:pr-5 '>
-                <div className='grid grid-cols-3 w-full bg-green-200 text-center border border-black'>
-                    <p className='border-x border-black'>N</p>
-                    <p className='border-x border-black'>Pn</p>
-                    <p className=''>Acumulado</p>
+                <div className='grid grid-cols-5 w-full bg-green-200 text-center border border-black'>
+                    <p className='border-x col-span-1 border-black'>N</p>
+                    <p className='border-x col-span-2 border-black'>Pn</p>
+                    <p className='col-span-2'>Acumulado</p>
                 </div>
                 <div className='flex flex-col w-full border border-black '>
-                    {datos.Acumulado?.map((el)=><div key={el.n} className='grid grid-cols-3 text-center border-b border-black'><p className='border-x border-black'>{el.n}</p> <p className='border-x border-black'>{el.Pn}</p> <p>{el.PnAccumulated}</p></div>)}
+                    {datos.Acumulado?.map((el)=><div key={el.n} className=' text-sm grid grid-cols-5 text-center border-b border-black'><p className='border-x col-span-1 border-black'>{el.n}</p> <p className='border-x col-span-2 overflow-hidden px-1 border-black'>{el.Pn}</p> <p className='col-span-2 overflow-hidden px-1'>{el.PnAccumulated}</p></div>)}
                 </div>
         </div>
 
