@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import cola from './assets/imagen.png'
 
 function Calculator() {
   const [arrivalTime, setArrivalTime] = useState(0);
@@ -302,7 +302,7 @@ const WithLimit=()=>{
                 La teoría de colas permite estudiar de manera científica el tiempo que los clientes deben esperar cuando solicitan un servicio.</p>
         </div>
         <div className='flex w-full justify-center'>
-            <img src="src/components/assets/imagen.png"/> 
+            <img src={cola}/> 
         </div>   
     </div>
     </div>
