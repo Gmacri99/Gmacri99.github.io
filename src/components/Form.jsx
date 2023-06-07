@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import cola from './assets/imagen.png'
 import Pdf from './Pdf';
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
+
 
 function Calculator() {
   const [arrivalTime, setArrivalTime] = useState(0);
@@ -186,7 +188,8 @@ const WithLimit=()=>{
         Ws: timeOnSystem.toFixed(4),
         Wq: timeOnQueue.toFixed(4),
         Acumulado:chanceTheyAre,
-        Vacio:vacio.toFixed(4)
+        Vacio:vacio.toFixed(4),
+        λef:0
     })
   }
 
@@ -198,8 +201,14 @@ const WithLimit=()=>{
         window.alert("Debe ingresar los respectivos valores de λ y μ")
     }else if(arrivalTime===0 || responseTime===0 ||  showNumberInput){
         limit<1 ? window.alert("Debe ingresar los respectivos valores de λ, μ y el limite de cola") :  WithLimit()
-        
-    } else{
+    } else if(arrivalTime===responseTime){
+      window.alert("λ no puede ser igual a μ") 
+  } else if(arrivalTime>responseTime && showNumberInput){
+      limit<1 ? window.alert("si el tiempo de llegada es mayor que el tiempo de atención, El limite no puede ser menor que 0 ") :  WithLimit()
+    }else if(arrivalTime>responseTime && !showNumberInput){
+      window.alert("El tiempo de llegada no puede ser menor que el tiempo de atención si no hay limite en la cola") 
+    }
+    else{
         !showNumberInput ? WithinLimit() : WithLimit()
         console.log(arrivalTime,responseTime)
     }
@@ -216,6 +225,12 @@ const WithLimit=()=>{
   function handleNum3Change(event) {
     setLimit(Number(event.target.value));
   }
+
+  const downloadPdf = async () => {
+    const blob = await pdf(<Pdf limit={limit===0 ? "No posee limite" : limit} acumulado={datos.Acumulado} miu={responseTime} λef={!datos.λef ? null :datos.λef} lambda={arrivalTime} rho={datos.ρ} ls={datos.Ls} lq={datos.Lq} ws={datos.Ws} wq={datos.Wq}/>).toBlob();
+    const pdfURL = URL.createObjectURL(blob);
+    window.open(pdfURL, '_blank');
+  };
 
   function handleCheckboxChange(event) {
     setShowNumberInput(event.target.checked);
@@ -258,7 +273,8 @@ const WithLimit=()=>{
                 </div>
                 <div className='pt-2 pb-2 w-full flex justify-center'>
                 <button onClick={handleClick} className='bg-sky-800 px-5 py-2 rounded-lg text-white text-lg font-medium tracking-widest'>Calcular</button>
-                {datos?.p ? <button><Pdf rho={datos.p}/></button> : null }
+                {datos.ρ ? <button onClick={()=>downloadPdf()} className='bg-sky-800 px-5 py-2 rounded-lg text-white text-lg font-medium tracking-widest ml-2'>Descargar PDF</button>: null} 
+    
                 </div>
             </form>    
         </div>
@@ -311,7 +327,7 @@ const WithLimit=()=>{
 
 
     </div>
-    <div className=' md:grid lg:grid lg:grid-cols-2 bg-neutral-100'>
+    <div className='pt-4 md:grid lg:grid lg:grid-cols-2 bg-neutral-100'>
         <div className='flex justify-center w-full items-center text-center tracking-wider leading-4 px-5 '>
             <p className='sm:text-sm md:text-lg 2xl:text-2xl'>La teoría de colas es una herramienta matemática que se utiliza para estudiar las colas y las líneas de espera. 
                 Esta teoría se utiliza para resolver problemas de la vida real, como el tráfico. 
@@ -327,3 +343,4 @@ const WithLimit=()=>{
 }
 
 export default Calculator;
+
