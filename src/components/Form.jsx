@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cola from './assets/imagen.png'
+import Pdf from './Pdf';
 
 function Calculator() {
   const [arrivalTime, setArrivalTime] = useState(0);
@@ -257,6 +258,7 @@ const WithLimit=()=>{
                 </div>
                 <div className='pt-2 pb-2 w-full flex justify-center'>
                 <button onClick={handleClick} className='bg-sky-800 px-5 py-2 rounded-lg text-white text-lg font-medium tracking-widest'>Calcular</button>
+                {datos?.p ? <button><Pdf rho={datos.p}/></button> : null }
                 </div>
             </form>    
         </div>
@@ -304,6 +306,7 @@ const WithLimit=()=>{
                 <div className='flex flex-col w-full border border-black '>
                     {datos.Acumulado?.map((el)=><div key={el.n} className=' text-sm grid grid-cols-5 text-center border-b border-black'><p className='border-x col-span-1 border-black'>{el.n}</p> <p className='border-x col-span-2 overflow-hidden px-1 border-black'>{el.Pn}</p> <p className='col-span-2 overflow-hidden px-1'>{el.PnAccumulated}</p></div>)}
                 </div>
+                
         </div>
 
 
