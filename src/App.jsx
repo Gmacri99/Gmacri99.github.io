@@ -1,17 +1,18 @@
-import { Outlet } from 'react-router'
-import './App.css'
-import { Link } from 'react-router-dom'
+import Footer from "./components/Footer"
+import Calculator from "./components/Form"
+import Header from "./components/Header"
+
 
 function App() {
 
+
   return (
     <>
-      
-      <nav className='bg-sky-200 text-black font-bold p-5 flex justify-center text-2xl'>
-        <Link to='/' className='px-4 hover:text-sky-500'> Un Servidores</Link>
-        <Link to='/VariosServidores' className='px-4 hover:text-sky-500'> Varios Servidores</Link>
-      </nav>
-      <Outlet/>
+    <div className="h-screen bg-neutral-100">
+      <div className="md:h-24 2xl:h-1/6 bg-neutral-100"><Header/></div>
+      <div className="md:h-78  2xl:h-4/6 bg-neutral-100"><Calculator/></div>
+      <div className=" md:h-48 2xl:h-1/6 bg-neutral-100 "><Footer/></div>
+    </div>
     </>
   )
 }

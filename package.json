@@ -1,5 +1,5 @@
 {
-  "name": "calculadora",
+  "name": "colas",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.1.11",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router": "^6.12.1",
-    "react-router-dom": "^6.12.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
